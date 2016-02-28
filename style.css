@@ -13,7 +13,7 @@
 
 body {
     color: black;
-    font-size: 1.1em;
+    font-size: 1em;
     font-family: 'robotoregular';
     background-image: url('https://unsplash.it/1920/1080/?random');
     background-size: 100% 100%;
@@ -118,7 +118,7 @@ th {
 img.tab_favicon, img.tab_diigo_icon, .fa {
     height: 24px;
     width: 24px;
-    padding: 5px 5px 5px 5px;
+    padding: 4px 4px 4px 4px;
     background-color: rgba(255, 255, 255, 0.85);
     vertical-align: middle;
     border: 2px solid #999999;
@@ -175,7 +175,7 @@ i.tab_tag_icon {
 }
 
 input.tags, input.bookmark {
-    font-size: 1.1em;
+    font-size: 1em;
     width: 100%;
     padding: 3px;
     margin-left: 5px;
@@ -183,7 +183,7 @@ input.tags, input.bookmark {
 }
 
 .modal-content > button {
-    font-size: 1.1em;
+    font-size: 1em;
     font-weight: bold;
     background-color: #0099ff;
     color: #ffffff;
