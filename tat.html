@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>tagatab</title>
+<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.5.0/css/font-awesome.min.css" />
+<link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+<h1>tagatab</h1>
+
+<div class="container">
+    <table class="tab_table">
+        <tbody>
+        <tr>
+            <th id="title-header" class="clicky">Tab Title</th>
+            <th></th>
+            <th id="domain-header" class="clicky">Tab Domain</th>
+            <th id="other-header">Info</th>
+            <th id="bookmark-header">Remember</th>
+            <th id="third-party-header">Share</th>
+            <th id="close-header">Close</th>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="modal" id="tag-modal-template">
+    <div class="modal-content">
+        <span class="modal-close clicky">X</span> <br/>
+        <h3>Title</h3>
+        <input class="tags tags-title">
+        <h3>URL</h3>
+        <input class="tags tags-url">
+        <h3>Description</h3>
+        <input class="tags tags-desc">
+        <h3>Tags</h3>
+        <input class="tags tags-list" autofocus> <br/> <br/>
+        <button class="tags tags-save clicky">Save</button>
+    </div>
+</div>
+
+<div class="modal" id="bookmark-modal-template">
+    <div class="modal-content">
+        <span class="modal-close clicky">X</span> <br/>
+        <h3>Title</h3>
+        <input class="bookmark bookmark-title">
+        <h3>URL</h3>
+        <input class="bookmark bookmark-url">
+        <h3>Bookmark Folder</h3>
+        <input class="bookmark bookmark-folder">
+        <button class="bookmark bookmark-save clicky">Save</button>
+    </div>
+</div>
+
+<script type="text/javascript" src="tat-events.js"></script>
+<script type="text/javascript" src="tat-colors.js"></script>
+<script type="text/javascript" src="tat-sort.js"></script>
+<script type="text/javascript" src="tat-views.js"></script>
+<script type="text/javascript" src="tat.js"></script>
+</body>
+</html>

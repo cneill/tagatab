@@ -1,0 +1,208 @@
+@font-face {
+    font-family: 'robotoregular';
+    src: url('fonts/Roboto-Regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'robotobold';
+    src: url('fonts/Roboto-Bold-webfont.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+body {
+    color: black;
+    font-size: 1.1em;
+    font-family: 'robotoregular';
+    background-image: url('https://unsplash.it/1920/1080/?random');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-attachment: fixed;
+    padding: 0px;
+    margin: 0px;
+}
+
+@media only screen and (min-width: 2561px) {
+    body {
+        background-image: url('https://unsplash.it/4096/2160/?random');
+    }
+}
+
+@media only screen and (max-width: 2560px) {
+    body {
+        background-image: url('https://unsplash.it/2560/1440/?random');
+    }
+}
+
+@media only screen and (max-width: 1920px) {
+    body {
+        background-image: url('https://unsplash.it/1920/1080/?random');
+    }
+}
+
+@media only screen and (max-width: 1440px) {
+    body {
+        background-image: url('https://unsplash.it/1440/900/?random');
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    body {
+        background-image: url('https://unsplash.it/1024/768/?random');
+    }
+}
+
+.container {
+    margin: 20px;
+}
+
+.tab_table {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+a:active, a:hover {
+    color: black;
+    text-decoration: underline;
+}
+
+h1 {
+    background-color: white;
+    text-align: center;
+}
+
+.tab_link, .tab_domain {
+    font-family: 'robotobold';
+}
+
+span.tab_link:hover {
+    text-decoration: underline;
+}
+
+
+tr, td, th {
+    border-bottom: 1px dotted #666;
+    vertical-align: middle;
+    background-color: rgba(255,255,255,0);
+    /*background-color: rgba(255,255,255,0.2);*/
+}
+
+td {
+    text-align: center;
+}
+
+th {
+    font-family: 'robotobold';
+    background-color: rgba(255,255,255,0.85);
+}
+
+.clicky {
+    cursor: pointer;
+}
+
+.tab_link_cell {
+    text-align: right;
+    padding-right: 10px;
+}
+
+img.tab_favicon, img.tab_diigo_icon, .fa {
+    height: 24px;
+    width: 24px;
+    padding: 5px 5px 5px 5px;
+    background-color: rgba(255, 255, 255, 0.85);
+    vertical-align: middle;
+    border: 2px solid #999999;
+    -webkit-border-radius: 5px;
+}
+
+img.tab_favicon {
+    margin: 0px;
+}
+
+.fa {
+    margin: 0px 4px 0px 4px;
+    font-size: 24px;
+    vertical-align: middle;
+}
+
+i.tab_tag_icon {
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #111111;
+}
+
+
+/* MODAL OH GOD */
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    border: 1px solid #000000;
+    -webkit-border-radius: 10px;
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.modal-content > h3 {
+    font-weight: bold;
+    padding-bottom: 2px;
+}
+
+input.tags, input.bookmark {
+    font-size: 1.1em;
+    width: 100%;
+    padding: 3px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.modal-content > button {
+    font-size: 1.1em;
+    font-weight: bold;
+    background-color: #0099ff;
+    color: #ffffff;
+    padding: 5px 5px 5px 5px;
+    vertical-align: middle;
+    border: 2px solid #999999;
+    -webkit-border-radius: 5px;
+}
+
+/* The Close Button */
+.modal-close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+    color: #000;
+    text-decoration: none;
+}
