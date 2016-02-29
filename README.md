@@ -19,6 +19,11 @@ to install it is the following:
 0. Click the "Load unpacked extension..." button
 0. Navigate to where you cloned tagatab, select the tagatab folder, and click "open"
 
+__Note:__ This extension requests permissions for `http://*/*.ico` and
+`https://*/*.ico` so that it can request favicons and use them to generate the
+backgrounds for each tab's row.
+
+
 ## Features
 
 __Current__
@@ -36,6 +41,7 @@ __Current__
     - Switch to tagatab (hit enter)
 - View HTTP / HTTPS status of tabs
 - Tab rows are colored based on the tab's favicon
+- 100% native JavaScript!
 
 __Future__
 - Bookmark tabs
