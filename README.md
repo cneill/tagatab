@@ -1,56 +1,35 @@
-# Tag a Tab
+# tagatab
 
 ## About
 
-TOO MANY FUCKING TABS
+![Screenshot of tagatab](./img/ss.png)
 
-## Extension Features
+Ever feel like you have way, way too many tabs open, and you can't keep track
+of them all? Try tagatab: a simple Chrome extension designed to help you
+easily manage all your tabs from one place.
 
-- tag tab(s)
-- close all tabs in tag(s)
-- bookmark all tabs in tag(s)
-- save to diigo
-- save to Twitter
-- sort by domain
-- sort by tag
-- public tags (?)
-- share tabs by tags, domain
-- option for saving to local storage (compressed?)
-- split tabs into windows by tag
-- search
-    - tags
-    - domains
-    - titles
+## Features
 
-currently
-- tweet
-- add to diigo
-- close
-- see audible tabs
-- switch to tab
-- sort by title
-- sort by domain
-- search tabs with omnibar keyword "tat"
-- mute audio in tab
-- view HTTP (insecure) / HTTPS status of tabs
-- colors based on tab favicon
+__Current__
 
-## App Features
+- Share tabs on Twitter, reddit, and Hacker News
+- Save tabs on Diigo (more services to come!)
+- Sort tabs by domain, title
+- Switch to a tab by clicking its title
+- Close a tab
+- See audible tabs and toggle mute by clicking the audio icon
+- Omnibar (keyword "tat")
+    - Search open tabs by typing the title
+    - Switch to tagatab (hit enter)
+- View HTTP / HTTPS status of tabs
+- Tab rows are colored based on the tab's favicon
 
-- share links to server
-- browse most recent links
-- search by tag
+__Future?__
+- Bookmark tabs
+- Re-arrange tabs with 
 
-## Server Features
+Something missing that you'd like to see? File an issue, please! :)
 
-- share selected tags via API, UI
-- save to local storage
-- sync to bookmarks
-- git repo of tabs (?)
+## License
 
-
-
-
-## TODO
-- bookmark popup
-- drag to select tabs to tag
+tagatab is licensed under the "new" BSD 3-clause [license](./LICENSE). 
