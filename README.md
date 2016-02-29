@@ -1,8 +1,8 @@
 # tagatab
 
-## About
-
 ![Screenshot of tagatab](./img/ss.png)
+
+## About
 
 Ever feel like you have way, way too many tabs open, and you can't keep track
 of them all? Try tagatab: a simple Chrome extension designed to help you
@@ -10,8 +10,13 @@ easily manage all your tabs from one place.
 
 ## Installation
 
-I haven't gotten tagatab into the Chrome Store yet, so for now the easiest way
-to install it is the following:
+### Chrome Web Store
+
+[![Chrome web store](https://developer.chrome.com/webstore/images/ChromeWebStore_Badge_v2_206x58.png)](https://chrome.google.com/webstore/detail/tagatab/lebadmogfkelbiobapphelffmdjlnenj)
+
+### From Source
+
+You can install from source like so:
 
 0. Clone the repository somewhere you'll remember
 0. Visit `chrome://extensions` in Chrome
