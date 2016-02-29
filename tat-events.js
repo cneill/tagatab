@@ -73,7 +73,9 @@ var get_active_modal = function () {
 // close the active modal (if any)
 var close_active_modal = function() {
     var active_modal = get_active_modal();
-    if (!active_modal) return;
+    if (!active_modal) {
+        return;
+    }
     active_modal.style.display = "none";
     active_modal.parentElement.removeChild(active_modal);
     window.onclick = null;
@@ -112,7 +114,3 @@ var message_handler = function (request, sender, sendResponse) {
         }
     }
 };
-
-
-
-
