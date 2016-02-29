@@ -8,12 +8,25 @@ Ever feel like you have way, way too many tabs open, and you can't keep track
 of them all? Try tagatab: a simple Chrome extension designed to help you
 easily manage all your tabs from one place.
 
+## Installation
+
+I haven't gotten tagatab into the Chrome Store yet, so for now the easiest way
+to install it is the following:
+
+0. Clone the repository somewhere you'll remember
+0. Visit `chrome://extensions` in Chrome
+0. Check the "Developer Mode" checkbox
+0. Click the "Load unpacked extension..." button
+0. Navigate to where you cloned tagatab, select the tagatab folder, and click "open"
+
 ## Features
 
 __Current__
 
+- Replaces Chrome's "new tab" page
+- Random image from [unsplash.it](https://unsplash.it/) on every refresh
 - Share tabs on Twitter, reddit, and Hacker News
-- Save tabs on Diigo (more services to come!)
+- Save tabs on Diigo
 - Sort tabs by domain, title
 - Switch to a tab by clicking its title
 - Close a tab
@@ -24,9 +37,9 @@ __Current__
 - View HTTP / HTTPS status of tabs
 - Tab rows are colored based on the tab's favicon
 
-__Future?__
+__Future__
 - Bookmark tabs
-- Re-arrange tabs with 
+- More services to save and share with
 
 Something missing that you'd like to see? File an issue, please! :)
 

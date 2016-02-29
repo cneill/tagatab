@@ -133,7 +133,7 @@ var update_tab_list = function () {
             var tag_link = get_tag_button(tab.id)
             ,   bookmark_link = get_bookmark_button(tab.id);
             remember_td.appendChild(tag_link);
-            remember_td.appendChild(bookmark_link);
+            //remember_td.appendChild(bookmark_link);
             remember_td.appendChild(get_diigo_button(tab.url, tab.title));
 
             social_td.appendChild(get_twitter_button(tab.url, tab.title));

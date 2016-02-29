@@ -44,6 +44,7 @@ var set_domain_colors = function(req) {
         return;
     }
     get_icon_color(req.url, req.domain, req.orig_url, function (domain, color) {
+        color = color ? color : "#ffffff";
         console.log("GOT COLOR: " + color + " FOR DOMAIN: " + domain);
         var colors = {"fg": get_text_color(color), "bg": color};
         tat_conf.domain_colors[domain] = colors;
