@@ -116,8 +116,10 @@ th {
 }
 
 img.tab_favicon, img.tab_diigo_icon, .fa {
-    height: 24px;
-    width: 24px;
+    /*height: 24px;
+    width: 24px;*/
+    height: 1em;
+    width: 1em;
     padding: 4px 4px 4px 4px;
     background-color: rgba(255, 255, 255, 0.85);
     vertical-align: middle;
@@ -131,7 +133,8 @@ img.tab_favicon {
 
 .fa {
     margin: 0px 4px 0px 4px;
-    font-size: 24px;
+    /*font-size: 24px;*/
+    font-size: 1em;
     vertical-align: middle;
 }
 
