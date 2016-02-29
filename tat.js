@@ -49,12 +49,11 @@ var sanitize_title = function(title) {
 
 // get an appropriate icon URL for local/chrome-protocol links
 var get_proper_favicon_url = function (url) {
-    /*
-    if (url.indexOf("newtab") !== -1) {
+    if (typeof(url) === "undefined" || url === "") {
+        return chrome.runtime.getURL("img/icon_tab.png");
+    } else if (url.indexOf("newtab") !== -1) {
         return chrome.runtime.getURL("img/tat.png");
-    }
-    */
-    if (typeof(url) === "undefined" || url === "" || url.indexOf("chrome") === 0) {
+    } else if (url.indexOf("chrome") === 0) {
         return chrome.runtime.getURL("img/icon_tab.png");
     } 
     return url;
@@ -64,10 +63,15 @@ var get_proper_favicon_url = function (url) {
 var request_favicon_data = function (url, domain) {
     url = get_proper_favicon_url(url);
     console.log("Requesting " + url);
-    chrome.runtime.sendMessage({ "action": "download_favicon"
-                               , "url": url
-                               , "domain": domain
-                               });
+    chrome.runtime.sendMessage(
+        { "action": "download_favicon"
+        , "url": url
+        , "domain": domain
+        },
+        function (resp) {
+            set_domain_colors(resp);
+        }
+    );
 };
 
 // update the DOM with info on all open tabs (fires when a tab_list message is

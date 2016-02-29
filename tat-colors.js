@@ -1,10 +1,19 @@
+// first check the tab cache, then check localstorage, then FINALLY go get the favicon if we have to
 var get_tab_colors = function (tab) {
     var domain = get_domain_name(tab.url);
     if (tat_conf.domain_colors[domain] !== undefined) {
         return tat_conf.domain_colors[domain];
     } else if (tat_conf.pending[domain] === undefined && tab.favIconUrl) {
-        tat_conf.pending[domain] = true;
-        request_favicon_data(tab.favIconUrl, domain);
+        chrome.runtime.sendMessage({"action": "get_domain_colors", "domain": domain}, function (resp) {
+            if (resp.colors === null) {
+                request_favicon_data(tab.favIconUrl, domain);
+                tat_conf.pending[domain] = true;
+                request_tabs();
+            } else {
+                tat_conf.domain_colors[domain] = resp.colors;
+                return resp.colors;
+            }
+        });
     }
     return { "bg": "#ffffff", "fg": "#000000" };
 };
@@ -36,8 +45,10 @@ var set_domain_colors = function(req) {
     }
     get_icon_color(req.url, req.domain, req.orig_url, function (domain, color) {
         console.log("GOT COLOR: " + color + " FOR DOMAIN: " + domain);
-        tat_conf.domain_colors[domain] = {"fg": get_text_color(color), "bg": color};
+        var colors = {"fg": get_text_color(color), "bg": color};
+        tat_conf.domain_colors[domain] = colors;
         delete tat_conf.pending[domain];
+        chrome.runtime.sendMessage({"action": "set_domain_colors", "domain": domain, "colors": colors});
         request_tabs();
     });
 };

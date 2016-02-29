@@ -10,7 +10,10 @@ var close_link_handler = function () {
 };
 
 var bookmark_link_handler = function () {
-    chrome.runtime.sendMessage({"action": "bookmark_tab",  "focused_tab_id": parseInt(this.id, 10)});
+    chrome.runtime.sendMessage({"action": "bookmark_tab",  "focused_tab_id": parseInt(this.id, 10)}, 
+        function (resp) {
+            bookmark_message_handler(resp.bookmark_tree, resp.focused_tab_id);
+        });
 };
 
 // close the active modal if the user clicks outside of it
@@ -101,17 +104,12 @@ var message_handler = function (request, sender, sendResponse) {
     // we got a list of tabs from the background page
     if (request.type === "tab_list") {
         temp_tabs = request.tabs.slice(0); // clone the tabs
-        // TAB_ANCESTRY = request.ancestry; // clone ancestry
         tat_conf.ancestry = request.ancestry;
         var changed = update_tabs(temp_tabs);
         if (changed) {
             tab_sort();
             update_tab_list();
         }
-    } else if (request.type === "bookmark_tree") {
-        bookmark_message_handler(request.bookmark_tree, request.focused_tab_id);
-    } else if (request.type === "favicon_data") {
-        set_domain_colors(request);
     }
 };
 

@@ -129,24 +129,39 @@ var set_up_event_listeners = function () {
     }
 
     chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-        if (message.action === "request_tabs") {
+        var callback = sendResponse;
+        var msg = message;
+        if (msg.action === "request_tabs") {
             if (sender.tab.id) {
                 update_tabs(sender.tab.id);
             }
-        } else if (message.action === "switch_tab") {
-             chrome.tabs.update(message.tab_id, {"active": true});
-        } else if (message.action === "close_tab") {
+        } else if (msg.action === "switch_tab") {
+             chrome.tabs.update(msg.tab_id, {"active": true});
+        } else if (msg.action === "close_tab") {
             // tab_ids should be integer or array of integers
-            chrome.tabs.remove(message.tab_ids);
-        } else if (message.action === "bookmark_tab") {
+            chrome.tabs.remove(msg.tab_ids);
+        } else if (msg.action === "bookmark_tab") {
             chrome.bookmarks.getTree(function (tree) {
-                chrome.tabs.sendMessage( sender.tab.id
-                                       , { "type": "bookmark_tree"
-                                         , "bookmark_tree": tree
-                                         , "focused_tab_id": message.focused_tab_id
-                                         });
+                callback({ "type": "bookmark_tree"
+                         , "bookmark_tree": tree
+                         , "focused_tab_id": msg.focused_tab_id
+                         });
             });
-        } else if (message.action === "download_favicon") {
+            return true;
+        } else if (message.action === "get_domain_colors") {
+            chrome.storage.sync.get(msg.domain + "_colors", function (result) {
+                if (result[msg.domain + "_colors"]) {
+                    callback({"colors": result[msg.domain + "_colors"]});
+                } else {
+                    callback({"colors": null});
+                }
+            });
+            return true;
+        } else if (msg.action === "set_domain_colors") {
+            colors = {};
+            colors[msg.domain + "_colors"] = msg.colors;
+            chrome.storage.sync.set(colors);
+        } else if (msg.action === "download_favicon") {
             // USE AJAX TO DOWNLOAD THE FAVICON
             // THIS IS WHY WE NEED THE http://* AND https://* PERMISSIONS!
             // with help from https://stackoverflow.com/questions/20035615/using-raw-image-data-from-ajax-request-for-data-uri
@@ -164,20 +179,20 @@ var set_up_event_listeners = function () {
                     }
                     var b64 = btoa(raw);                   
                     var data_url = "data:image/x-icon;base64," + b64;
-                    chrome.tabs.sendMessage( sender.tab.id
-                                           , { "type": "favicon_data"
-                                             , "url": data_url
-                                             , "domain": message.domain
-                                             , "orig_url": message.url
-                                             });
+                    callback({ "type": "favicon_data"
+                             , "url": data_url
+                             , "domain": msg.domain
+                             , "orig_url": msg.url
+                             });
                 }
             };
             xhr.responseType = "arraybuffer";
-            url = message.url;
+            url = msg.url;
             xhr.open("GET", url, true);
             xhr.send();
-        } else if (message.action === "mute_toggle") {
-            chrome.tabs.update(message.id, {"muted": message.mute_status});
+            return true;
+        } else if (msg.action === "mute_toggle") {
+            chrome.tabs.update(msg.id, {"muted": msg.mute_status});
         }
     });
 
