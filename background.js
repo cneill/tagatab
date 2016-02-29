@@ -42,7 +42,7 @@ var update_tabs = function (_id, callback) {
         current_window = window; 
         if (tat_tab_id === null) {
             tat_tab_id = _id;
-        } else if (_id != tat_tab_id) {
+        } else if (_id !== tat_tab_id) {
             old_tat_tab_id = tat_tab_id;
             tat_tab_id = _id;
             switch_to_tat_tab();
@@ -54,14 +54,14 @@ var update_tabs = function (_id, callback) {
 
         // keep "known_tab_ids" up-to-date (adding and removing as necessary)
         for (var i in tabs) {
-            if (known_tab_ids.indexOf(tabs[i].id) == -1) {
+            if (known_tab_ids.indexOf(tabs[i].id) === -1) {
                 known_tab_ids.push(tabs[i].id);
             }
         }
         for (var j in known_tab_ids) {
             var found = false;
             for (var k in tabs) {
-                if (tabs[k].id == known_tab_ids[j]) {
+                if (tabs[k].id === known_tab_ids[j]) {
                     found = true;
                     break;
                 }
@@ -92,6 +92,7 @@ var update_ancestry_tree = function (_id, parent_id) {
     } else {
         if (typeof(parent_id) === undefined) {
             // do nothing, orphan
+            return;
         } else if (TAB_ANCESTRY[parent_id] && TAB_ANCESTRY[parent_id].children.indexOf(_id) === -1) {
             TAB_ANCESTRY[parent_id].children.push(_id);
         } else if (!TAB_ANCESTRY[parent_id]) {
@@ -99,6 +100,7 @@ var update_ancestry_tree = function (_id, parent_id) {
             TAB_ANCESTRY[_id].parent = parent_id;
         } else {
             // do nothing, we got it
+            return;
         }
     }
 };
@@ -127,16 +129,16 @@ var set_up_event_listeners = function () {
     }
 
     chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-        if (message.action == "request_tabs") {
+        if (message.action === "request_tabs") {
             if (sender.tab.id) {
                 update_tabs(sender.tab.id);
             }
-        } else if (message.action == "switch_tab") {
+        } else if (message.action === "switch_tab") {
              chrome.tabs.update(message.tab_id, {"active": true});
-        } else if (message.action == "close_tab") {
+        } else if (message.action === "close_tab") {
             // tab_ids should be integer or array of integers
             chrome.tabs.remove(message.tab_ids);
-        } else if (message.action == "bookmark_tab") {
+        } else if (message.action === "bookmark_tab") {
             chrome.bookmarks.getTree(function (tree) {
                 chrome.tabs.sendMessage( sender.tab.id
                                        , { "type": "bookmark_tree"
@@ -144,14 +146,14 @@ var set_up_event_listeners = function () {
                                          , "focused_tab_id": message.focused_tab_id
                                          });
             });
-        } else if (message.action == "download_favicon") {
+        } else if (message.action === "download_favicon") {
             // USE AJAX TO DOWNLOAD THE FAVICON
             // THIS IS WHY WE NEED THE http://* AND https://* PERMISSIONS!
             // with help from https://stackoverflow.com/questions/20035615/using-raw-image-data-from-ajax-request-for-data-uri
             var xhr = new XMLHttpRequest();
             var url;
             xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
+                if (xhr.readyState === 4 && xhr.status === 200) {
                     var arr = new Uint8Array(this.response);
                     // var raw = String.fromCharCode.apply(null,arr);
                     var raw = "";
@@ -174,14 +176,14 @@ var set_up_event_listeners = function () {
             url = message.url;
             xhr.open("GET", url, true);
             xhr.send();
-        } else if (message.action == "mute_toggle") {
+        } else if (message.action === "mute_toggle") {
             chrome.tabs.update(message.id, {"muted": message.mute_status});
         }
     });
 
     // TAB UPDATE EVENTS
     chrome.tabs.onCreated.addListener(function (tab) {
-        if (tab.url == "newtab" && tat_tab_id && tab.id != tat_tab_id) {
+        if (tab.url === "newtab" && tat_tab_id && tab.id !== tat_tab_id) {
             switch_to_tat_tab();
             chrome.tabs.remove(tab.id);
             update_tabs(tat_tab_id);
@@ -192,7 +194,7 @@ var set_up_event_listeners = function () {
     });
 
     chrome.tabs.onUpdated.addListener(function (tab_id, change_info, tab) {
-        if (tab_id == tat_tab_id && change_info.url) {
+        if (tab_id === tat_tab_id && change_info.url) {
             tat_tab_id = null;
             console.log(tab_id, change_info);
             return;
@@ -201,7 +203,7 @@ var set_up_event_listeners = function () {
     });
 
     chrome.tabs.onRemoved.addListener(function (tab_id, remove_info) {
-        if (tab_id == tat_tab_id) {
+        if (tab_id === tat_tab_id) {
             tat_tab_id = null;
         } else {
             update_tabs(tat_tab_id);
@@ -209,7 +211,7 @@ var set_up_event_listeners = function () {
     });
 
     chrome.tabs.onReplaced.addListener(function (added, removed) {
-        if (removed == tat_tab_id) {
+        if (removed === tat_tab_id) {
             tat_tab_id = null;
         } else {
             update_tabs(tat_tab_id);

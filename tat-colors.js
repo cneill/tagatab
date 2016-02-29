@@ -1,3 +1,14 @@
+var get_tab_colors = function (tab) {
+    var domain = get_domain_name(tab.url);
+    if (tat_conf.domain_colors[domain] !== undefined) {
+        return tat_conf.domain_colors[domain];
+    } else if (tat_conf.pending[domain] === undefined && tab.favIconUrl) {
+        tat_conf.pending[domain] = true;
+        request_favicon_data(tab.favIconUrl, domain);
+    }
+    return { "bg": "#ffffff", "fg": "#000000" };
+};
+
 // get the optimal text color for a given background color
 var get_text_color = function (bg_color) {
     if (bg_color === undefined || bg_color.indexOf("#") === -1) {
@@ -17,14 +28,16 @@ var get_text_color = function (bg_color) {
     return color;
 };
 
-var set_domain_color = function(req) {
-    if (DOMAIN_COLORS[req.domain] !== undefined) {
+// once we receive a message with the raw info for our icon, we analyze it and
+// save the background and foreground colors for the domain
+var set_domain_colors = function(req) {
+    if (tat_conf.domain_colors[req.domain] !== undefined) {
         return;
     }
     get_icon_color(req.url, req.domain, req.orig_url, function (domain, color) {
-        console.log("GOT COLOR: " + color + " FOR DOMAIN: " + req.domain);
-        DOMAIN_COLORS[domain] = color;
-        delete PENDING_DOMAIN_FAVICONS[color];
+        console.log("GOT COLOR: " + color + " FOR DOMAIN: " + domain);
+        tat_conf.domain_colors[domain] = {"fg": get_text_color(color), "bg": color};
+        delete tat_conf.pending[domain];
         request_tabs();
     });
 };
@@ -72,10 +85,6 @@ var get_icon_color = function(url, domain, orig_url, callback) {
         height = 24;
         for (var x_coord = 0; x_coord < width; x_coord++) {
             for (var y_coord = 0; y_coord < height; y_coord++) {
-                if (coords[[x_coord, y_coord].join(",")]) {
-                    continue;
-                }
-
                 var img_data = c.getImageData(x_coord, y_coord, 1, 1).data
                 ,   r = img_data[0]
                 ,   g = img_data[1]
@@ -96,26 +105,14 @@ var get_icon_color = function(url, domain, orig_url, callback) {
 
                     max_occurrences = colors[combined];
                     max_color = hex;
-                    /*
-                    if (colors[combined] > ((width * height) / 2)) {
-                        console.log("NATURAL CONSENSUS!");
-                        callback(domain, hex);
-                        consensus = true;
-                        break;
-                    } 
-                    */
                 }
-                coords[[x_coord, y_coord].join(",")] = true;
-                if (Object.keys(coords).length === (width * height)) {
+                if (max_occurrences > (width * height) / 4) {
                     callback(domain, max_color);
-                    consensus = true;
-                    break;
+                    return;
                 }
-            }
-            if (consensus) {
-                break;
             }
         }
+        callback(domain, max_color);
     };
     img.onerror = function (e) {
         console.log("oh teh noez");

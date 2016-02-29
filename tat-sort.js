@@ -1,72 +1,55 @@
-// 0 == ascending, 1 == descending
-var ghetto_sort = function (a, b, _dir, parser) {
-    var a_info = parser(a);
-    var b_info = parser(b);
+// sort our tabs based on the sort type and direction
+var cust_sort = function (a_info, b_info) {
     var result = 0;
 
-    if (_dir === 0) {
-        if (a_info < b_info) { 
-            result = -1;
-        } else if (a_info > b_info) {
-            result = 1;
-        } 
-    } else {
-        if (a_info < b_info) {
-            result = 1;
-        } else if (a_info > b_info) {
-            result = -1;
-        }
+    if (a_info < b_info) { 
+        result = -1;
+    } else if (a_info > b_info) {
+        result = 1;
+    } 
+
+    if (tat_conf.sorting.direction === "desc") {
+        result = result * -1;
     }
     return result;
 };
 
-// title parser for ghetto sorter
-var title_parser = function (tab) {
-    return tab.title.toLowerCase();
-};
-
-// domain parser for ghetto sorter
-var domain_parser = function (tab) {
-    return get_domain_name(tab.url).toLowerCase();
-};
-
+// sort our tabs based on title, domain, or by their index
 var tab_sort = function () {
-    var tabs = CURRENT_TABS.slice(0);
-    if (TITLE_SORTED) {
+    var tabs = tat_conf.tabs.slice(0);
+    switch (tat_conf.sorting.sort) {
+    case "title":
         tabs = tabs.sort(function (a, b) {
-            return ghetto_sort(a, b, TITLE_SORT_DIR, title_parser);
+            return cust_sort(a.title.toLowerCase(), b.title.toLowerCase());
         });
-    } else if (DOMAIN_SORTED) {
+        break;
+    case "domain":
         tabs = tabs.sort(function (a, b) {
-            return ghetto_sort(a, b, DOMAIN_SORT_DIR, domain_parser);
+            return cust_sort(get_domain_name(a.url).toLowerCase(),
+                             get_domain_name(b.url).toLowerCase());
         });
-    }  else if (INDEX_SORTED) {
+        break;
+    case "index":
         tabs = tabs.sort(function (a, b) {
-            return ghetto_sort(a, b, 0, function (tab) {
-                return tab.index;
-            });
+            return cust_sort(a.index, b.index);
         });
+        break;
     }
-    CURRENT_TABS = tabs;
+    tat_conf.tabs = tabs;
 };
 
+// set the event handlers for our table headings to sort by title/domain
 var setup_sorting = function () {
     var title_header = document.getElementById("title-header");
     var domain_header = document.getElementById("domain-header");
     title_header.addEventListener("click", function () {
-        INDEX_SORTED = false;
-        TITLE_SORTED = true;
-        TITLE_SORT_DIR = TITLE_SORT_DIR === 0 ? 1 : 0; // flip sort dir if we're already sorting by title
-        DOMAIN_SORTED = false;
+        tat_conf.sorting.sort = "title";
+        tat_conf.sorting.direction = tat_conf.sorting.direction === "asc" ? "desc" : "asc";
         request_tabs();
     });
     domain_header.addEventListener("click", function () {
-        INDEX_SORTED = false;
-        DOMAIN_SORTED = true;
-        DOMAIN_SORT_DIR = DOMAIN_SORT_DIR === 0 ? 1 : 0;
-        TITLE_SORTED = false;
+        tat_conf.sorting.sort = "domain";
+        tat_conf.sorting.direction = tat_conf.sorting.direction === "asc" ? "desc" : "asc";
         request_tabs();
     });
 };
-
-

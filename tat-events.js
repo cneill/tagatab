@@ -87,12 +87,12 @@ var audible_handler = function () {
         this.className = "fa fa-volume-off clicky";
         id = this.parentElement.parentElement.getElementsByClassName("tab_link")[0].id;
         mute_toggle(id, true);
-        MUTED_TABS[id] = true;
+        tat_conf.muted[id] = true;
     } else {
         this.className = "fa fa-volume-up clicky";
         id = this.parentElement.parentElement.getElementsByClassName("tab_link")[0].id;
         mute_toggle(id, false);
-        MUTED_TABS[id] = false;
+        tat_conf.muted[id] = false;
     }
 };
 
@@ -101,7 +101,8 @@ var message_handler = function (request, sender, sendResponse) {
     // we got a list of tabs from the background page
     if (request.type === "tab_list") {
         temp_tabs = request.tabs.slice(0); // clone the tabs
-        TAB_ANCESTRY = request.ancestry; // clone ancestry
+        // TAB_ANCESTRY = request.ancestry; // clone ancestry
+        tat_conf.ancestry = request.ancestry;
         var changed = update_tabs(temp_tabs);
         if (changed) {
             tab_sort();
@@ -110,7 +111,7 @@ var message_handler = function (request, sender, sendResponse) {
     } else if (request.type === "bookmark_tree") {
         bookmark_message_handler(request.bookmark_tree, request.focused_tab_id);
     } else if (request.type === "favicon_data") {
-        set_domain_color(request);
+        set_domain_colors(request);
     }
 };
 

@@ -1,22 +1,20 @@
-/*globals chrome*/
-var tab_table = null
-,   CURRENT_TABS = []
-,   MUTED_TABS = {}
-,   TAB_ANCESTRY = {}
-,   INDEX_SORTED = true
-,   TITLE_SORTED = false
-,   TITLE_SORT_DIR = 1
-,   DOMAIN_SORTED = false
-,   DOMAIN_SORT_DIR = 1
-,   DOMAIN_COLORS = {"tagatab": "#cccc00"}
-,   PENDING_DOMAIN_FAVICONS = {};
+var tat_conf = { "tabs": []
+               , "muted_tabs": {}
+               , "domain_colors": { "tagatab": { "bg": "#cccc00", "fg": "#000000" } }
+               , "pending": {}
+               , "ancestry": {}
+               , "sorting": { "sort": "index"
+                            , "direction": "asc"
+                            }
+               , "table": null
+               };
 
 // return Chrome's tab object for a given id, or null if not found
 var get_tab_by_id = function (id) {
     id = parseInt(id, 10);
-    for (var i = 0; i < CURRENT_TABS.length; i++) {
-        if (CURRENT_TABS[i].id === id) {
-            return CURRENT_TABS[i];
+    for (var i = 0; i < tat_conf.tabs.length; i++) {
+        if (tat_conf.tabs[i].id === id) {
+            return tat_conf.tabs[i];
         }
     }
     return null;
@@ -51,9 +49,14 @@ var sanitize_title = function(title) {
 
 // get an appropriate icon URL for local/chrome-protocol links
 var get_proper_favicon_url = function (url) {
+    /*
+    if (url.indexOf("newtab") !== -1) {
+        return chrome.runtime.getURL("img/tat.png");
+    }
+    */
     if (typeof(url) === "undefined" || url === "" || url.indexOf("chrome") === 0) {
         return chrome.runtime.getURL("img/icon_tab.png");
-    }
+    } 
     return url;
 };
 
@@ -71,16 +74,16 @@ var request_favicon_data = function (url, domain) {
 // sent from the background page)
 var update_tab_list = function () {
     var tab;
-    var tabs = CURRENT_TABS;
+    var tabs = tat_conf.tabs;
 
     // clear the table
-    var tt_parent = tab_table.parentElement;
-    var header_row = tab_table.firstElementChild.cloneNode(true);
+    var tt_parent = tat_conf.table.parentElement;
+    var header_row = tat_conf.table.firstElementChild.cloneNode(true);
     var tt_temp = document.createElement("tbody");
     tt_temp.appendChild(header_row);
     tt_parent.appendChild(tt_temp);
-    tab_table.remove();
-    tab_table = tt_temp;
+    tat_conf.table.remove();
+    tat_conf.table = tt_temp;
     setup_sorting();
 
 
@@ -90,20 +93,9 @@ var update_tab_list = function () {
             var domain = get_domain_name(tab.url)
             ,   color;
 
-            if (DOMAIN_COLORS[domain] !== undefined) {
-                color = DOMAIN_COLORS[domain];
-            } else if (!PENDING_DOMAIN_FAVICONS[domain] && tab.favIconUrl) {
-                PENDING_DOMAIN_FAVICONS[domain] = true;
-                request_favicon_data(tab.favIconUrl, domain);
-            } /* else if (domain == "newtab" && tab.status == "complete") {
-                PENDING_DOMAIN_FAVICONS[domain] = true;
-                request_favicon_data(tab.favIconUrl, domain);
-            } */ else {
-                color = "#ffffff";
-            }
-
+            var tab_colors = get_tab_colors(tab);
             
-            var temp_tr = tab_table.insertRow(tab_table.rows.length);
+            var temp_tr = tat_conf.table.insertRow(tat_conf.table.rows.length);
             temp_tr.className = "tab_row";
             // create each TD for the row
             var link_td = temp_tr.insertCell(0)
@@ -119,15 +111,15 @@ var update_tab_list = function () {
             ,   icon = tab_link.lastElementChild; // TODO: FIX THIS BULLSHIT
             link_td.className = "tab_link_cell";
             link_td.appendChild(tab_link);
-            link_td.style.backgroundColor = color;
-            link_td.style.color = get_text_color(color);
+            link_td.style.backgroundColor = tab_colors.bg;
+            link_td.style.color = tab_colors.fg;
 
             // construct the icon td
             icon_td.appendChild(icon);
 
             // construct the domain td
-            domain_td.style.backgroundColor = color;
-            domain_td.style.color = get_text_color(color);
+            domain_td.style.backgroundColor = tab_colors.bg;
+            domain_td.style.color = tab_colors.fg;
             domain_td.className = "tab_domain";
             domain_td.appendChild(document.createTextNode(domain));
 
@@ -216,14 +208,14 @@ var update_tabs = function (tabs) {
     ,   found_old_tab
     ,   temp_tabs
     ,   changed = false;
-    // if we haven't populated CURRENT_TABS yet, clone the tabs from
-    if (CURRENT_TABS.length === 0) {
-        CURRENT_TABS = tabs;
+    // if we haven't populated tat_conf.tabs yet, populate from 'tabs'
+    if (tat_conf.tabs.length === 0) {
+        tat_conf.tabs = tabs;
         changed = true;
         return changed;
     }
-    // clone `CURRENT_TABS` and compare to `tabs`
-    temp_tabs = CURRENT_TABS.slice(0);
+    temp_tabs = tat_conf.tabs.slice(0);
+
     for (var new_index in tabs) {
         if (tabs.hasOwnProperty(new_index)) {
             found_new_tab = false;
@@ -267,7 +259,8 @@ var update_tabs = function (tabs) {
             }
         }
     }
-    CURRENT_TABS = temp_tabs;
+    //CURRENT_TABS = temp_tabs;
+    tat_conf.tabs = temp_tabs;
     return changed;
 };
 
@@ -278,7 +271,7 @@ var request_tabs = function () {
 
 (function () {
     chrome.runtime.onMessage.addListener(message_handler);
-    tab_table = document.getElementsByClassName("tab_table")[0].getElementsByTagName("tbody")[0];
+    tat_conf.table = document.getElementsByClassName("tab_table")[0].lastElementChild;
     setup_sorting();
     request_tabs();
 })();
