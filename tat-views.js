@@ -105,7 +105,7 @@ var get_close_button = function (id) {
 var get_fa_icon = function (_class, color) {
     var fa_ico = document.createElement("i");
     fa_ico.className = _class;
-    if (typeof(color) !== "undefined") {
+    if (typeof color !== "undefined") {
         fa_ico.style.color = color;
     }
     return fa_ico;
@@ -163,7 +163,7 @@ var get_link = function (opts) {
 var get_info_td = function (tab, td) {
     if (tab.audible) {
         var vol_icon;
-        if (MUTED_TABS[tab.id] !== undefined && MUTED_TABS[tab.id]) {
+        if (typeof MUTED_TABS[tab.id] !== "undefined" && MUTED_TABS[tab.id]) {
             vol_icon = get_fa_icon("fa fa-volume-off clicky");
         } else {
             vol_icon = get_fa_icon("fa fa-volume-up clicky");

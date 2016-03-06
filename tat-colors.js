@@ -1,9 +1,9 @@
 // first check the tab cache, then check localstorage, then FINALLY go get the favicon if we have to
 var get_tab_colors = function (tab) {
     var domain = get_domain_name(tab.url);
-    if (tat_conf.domain_colors[domain] !== undefined) {
+    if (typeof tat_conf.domain_colors[domain] !== "undefined") {
         return tat_conf.domain_colors[domain];
-    } else if (tat_conf.pending[domain] === undefined && tab.favIconUrl) {
+    } else if (typeof tat_conf.pending[domain] === "undefined" && tab.favIconUrl) {
         chrome.runtime.sendMessage({"action": "get_domain_colors", "domain": domain}, function (resp) {
             if (resp.colors === null) {
                 request_favicon_data(tab.favIconUrl, domain);
@@ -20,7 +20,7 @@ var get_tab_colors = function (tab) {
 
 // get the optimal text color for a given background color
 var get_text_color = function (bg_color) {
-    if (bg_color === undefined || bg_color.indexOf("#") === -1) {
+    if (typeof bg_color === "undefined" || bg_color.indexOf("#") === -1) {
         return "#000000";
     }
     var hex = bg_color.split("#").pop();
@@ -40,7 +40,7 @@ var get_text_color = function (bg_color) {
 // once we receive a message with the raw info for our icon, we analyze it and
 // save the background and foreground colors for the domain
 var set_domain_colors = function(req) {
-    if (tat_conf.domain_colors[req.domain] !== undefined) {
+    if (typeof tat_conf.domain_colors[req.domain] !== "undefined") {
         return;
     }
     get_icon_color(req.url, req.domain, req.orig_url, function (domain, color) {

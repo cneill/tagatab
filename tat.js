@@ -49,7 +49,7 @@ var sanitize_title = function(title) {
 
 // get an appropriate icon URL for local/chrome-protocol links
 var get_proper_favicon_url = function (url) {
-    if (typeof(url) === "undefined" || url === "") {
+    if (typeof url === "undefined" || url === "") {
         return chrome.runtime.getURL("img/icon_tab.png");
     } else if (url.indexOf("newtab") !== -1) {
         return chrome.runtime.getURL("img/tat.png");
@@ -171,18 +171,18 @@ var add_folder_to_elem = function(elem, search, current) {
 // TODO: FIGURE THIS THE FUCK OUT
 var traverse_bookmark_tree = function(node, elem, _parent, depth) {
     // elem is the datalist object we will be appending to
-    if (typeof(elem) === "undefined") {
+    if (typeof elem === "undefined") {
         elem = document.getElementsByClassName("modal");
     }
-    if (typeof(_parent) === "undefined") {
+    if (typeof _parent === "undefined") {
         _parent = null;
     }
 
-    if (typeof(depth) === "undefined") {
+    if (typeof depth === "undefined") {
         node = node[0];
         depth = 0;
     }
-    if (typeof(node.children) !== "undefined") {
+    if (typeof node.children !== "undefined") {
         obj = add_folder_to_obj(obj, node);
         for (var j = 0; j < node.children.length; j++) {
             traverse_bookmark_tree(node.children[j], obj, node, depth + 1);
