@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "tagatab",
   "description": "Control your tabs",
-  "version": "1.0",
+  "version": "1.0.2",
 
   "browser_action": {
     "default_icon": "img/tat.png"
@@ -29,5 +29,9 @@
   },
   "chrome_url_overrides" : {
     "newtab": "tat.html"
-  }
+  },
+  "web_accessible_resources": [
+    "img/*",
+    "fonts/*"
+  ]
 }
