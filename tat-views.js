@@ -163,7 +163,7 @@ var get_link = function (opts) {
 var get_info_td = function (tab, td) {
     if (tab.audible) {
         var vol_icon;
-        if (typeof MUTED_TABS[tab.id] !== "undefined" && MUTED_TABS[tab.id]) {
+        if (typeof tat_conf.muted_tabs[tab.id] !== "undefined" && tat_conf.muted_tabs[tab.id]) {
             vol_icon = get_fa_icon("fa fa-volume-off clicky");
         } else {
             vol_icon = get_fa_icon("fa fa-volume-up clicky");

@@ -80,7 +80,7 @@ var update_tabs = function (_id, callback) {
 // AHHHHH WTF IS THIS
 var update_ancestry_tree = function (_id, parent_id) {
     if (!TAB_ANCESTRY[_id]) {
-        if (typeof(parent_id) === undefined) {
+        if (typeof parent_id === "undefined") {
             TAB_ANCESTRY[_id] = {"parent": null, "children": []};
         } else if (TAB_ANCESTRY[parent_id]) {
             TAB_ANCESTRY[parent_id].children.push(_id);
@@ -90,7 +90,7 @@ var update_ancestry_tree = function (_id, parent_id) {
             TAB_ANCESTRY[_id] = {"parent": parent_id, "children": []};
         }
     } else {
-        if (typeof(parent_id) === undefined) {
+        if (typeof parent_id === "undefined") {
             // do nothing, orphan
             return;
         } else if (TAB_ANCESTRY[parent_id] && TAB_ANCESTRY[parent_id].children.indexOf(_id) === -1) {
