@@ -198,7 +198,7 @@ var set_up_event_listeners = function () {
 
     // TAB UPDATE EVENTS
     chrome.tabs.onCreated.addListener(function (tab) {
-        if (tab.url === "newtab" && tat_tab_id && tab.id !== tat_tab_id) {
+        if (tab.url === "newtab" && tat_tab_id && tab.id !== tat_tab_id && tab.status !== "loading") {
             switch_to_tat_tab();
             chrome.tabs.remove(tab.id);
             update_tabs(tat_tab_id);
