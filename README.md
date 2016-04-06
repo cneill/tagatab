@@ -31,6 +31,12 @@ backgrounds for each tab's row.
 
 ## Features
 
+### Using the Omnibar
+
+![Screenshot of tagatab omnibar functionality](./img/omnibar.png)
+
+You can switch to a tab by typing `tat` and then part of tab's title.
+
 __Current__
 
 - Replaces Chrome's "new tab" page
